@@ -49,7 +49,7 @@ public class DrawPanel extends JPanel implements CameraController.RepaintRequire
         scene.getModels().add(new Line3D(new Vector3(0, 0 , 0),
                 new Vector3(0, 0 ,1), Color.RED));
 
-        scene.getModels().add(new Dodecahedron(new Vector3(0.0f, 0.0f, 0.0f),
+        scene.getModels().add(new Octahedron(new Vector3(0.0f, 0.0f, 0.0f),
                 0.4f, new Color(150, 150, 150, 150)));
     }
 

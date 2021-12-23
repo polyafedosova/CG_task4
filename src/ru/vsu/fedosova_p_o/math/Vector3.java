@@ -6,8 +6,6 @@ public class Vector3 {
 
     private static final float EPS = 1e-8f;
 
-    private double arCos;
-
     public Vector3(float x, float y, float z) {
         this.values = new float[]{x, y, z};
     }
@@ -45,13 +43,5 @@ public class Vector3 {
         if(Math.abs(length) < EPS)
             return 0;
         return (float) Math.sqrt(length);
-    }
-
-    public double getArCos() {
-        return arCos;
-    }
-
-    public void setArCos(double arCos) {
-        this.arCos = arCos;
     }
 }

@@ -5,10 +5,13 @@ import ru.vsu.fedosova_p_o.math.Vector3;
 
 import java.util.ArrayList;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConvexHull {
     private Vector3[] pointArray;
+    private Map<Vector3, Double> pointsAngles = new HashMap<>();
     private final int N;
     private int D[];
 
@@ -31,10 +34,10 @@ public class ConvexHull {
                 j = i;
             }
         }
-        swap(0, j);
+        swap(pointArray, 0, j);
 
         for (int i = 1; i < N; i++) {
-            pointArray[i].setArCos(angle(i));
+            pointsAngles.put(pointArray[i], getAngle(i));
         }
 
         sort(pointArray);
@@ -106,43 +109,30 @@ public class ConvexHull {
         return aoX * baY - aoY * baX;
     }
 
-    private void swap(int i, int j) {
-        Vector3 tempPoint = new Vector3(pointArray[j].getX(), pointArray[j].getY(), pointArray[j].getZ());
-        tempPoint.setArCos(pointArray[j].getArCos());
-
-        pointArray[j].setX(pointArray[i].getX());
-        pointArray[j].setY(pointArray[i].getY());
-        pointArray[j].setArCos(pointArray[i].getArCos());
-
-        pointArray[i].setX(tempPoint.getX());
-        pointArray[i].setY(tempPoint.getY());
-        pointArray[i].setArCos(tempPoint.getArCos());
-    }
-
-    private double angle(int i) {
+    private double getAngle(int i) {
         double j, k, m, h;
         j = pointArray[i].getX() - pointArray[0].getX();
         k = pointArray[i].getY() - pointArray[0].getY();
         m = Math.sqrt(j * j + k * k);
         if (k < 0)
             j = (-1) * Math.abs(j);
-        h = Math.acos(j / m);
+        h = Math.cos(j / m);
         return h;
     }
 
     public void sort(Vector3[] sortableArray) {
-        quickSort(sortableArray, 0, sortableArray.length);
+        quickSort(sortableArray, 1, sortableArray.length);
     }
 
     private int partition(Vector3[] sortableArray, int leftBorder, int rightBorder) {
         int l = leftBorder;
         int r = rightBorder - 1;
-        double x = sortableArray[(l + r) / 2].getArCos();
+        double x = pointsAngles.get(sortableArray[(l + r) / 2]);
         while (l <= r) {
-            while (sortableArray[l].getArCos() < x) {
+            while (pointsAngles.get(sortableArray[l]) < x) {
                 l++;
             }
-            while (sortableArray[r].getArCos() > x) {
+            while (pointsAngles.get(sortableArray[r]) > x) {
                 r--;
             }
             if (l <= r) {
